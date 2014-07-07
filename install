@@ -28,9 +28,9 @@ for f in $(ls -f $BASEDIR/zsh/*.zsh); do
 done
 
 cat >> $HOME/.zshrc << EOF
-if [ -f "${ZDOTDIR:-$HOME}/.zsh_local" ]; then
-    source "${ZDOTDIR:-$HOME}/.zsh_local"  
-fi 
+
+# Include custom config
+[[ -f "$HOME/.zsh.local"  ]] && source "$HOME/.zsh.local"
 EOF
 
 fi
