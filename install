@@ -1,25 +1,36 @@
 #!/bin/bash
 
-FILE=$(readlink -f "$0")
-DOTFILES_PATH=$(dirname "$FILE")
+BASEDIR=$(readlink -f $0 | xargs dirname)
 
-ln -s $DOTFILES_PATH/tmux.conf $HOME/.tmux.conf
-ln -s $DOTFILES_PATH/vimrc $HOME/.vimrc
+ln -s $BASEDIR/tmux.conf $HOME/.tmux.conf
+ln -s $BASEDIR/vimrc $HOME/.vimrc
 
 # prezto
-if [ -d $DOTFILES_PATH/zsh/prezto ];
-then
-cd $DOTFILES_PATH/zsh/prezto
-git pull && git submodule update --init --recursive
-cd $DOTFILES_PATH
+if [ -d $BASEDIR/zsh/prezto ]; then
 
-ln -s $DOTFILES_PATH/zsh/prezto $HOME/.zprezto
+cd $BASEDIR/zsh/prezto
+git pull && git submodule update --init --recursive
+cd $BASEDIR
+
+ln -s $BASEDIR/zsh/prezto $HOME/.zprezto
 
 ln -s $HOME/.zprezto/runcoms/zlogin $HOME/.zlogin
 ln -s $HOME/.zprezto/runcoms/zlogout $HOME/.zlogout
 ln -s $HOME/.zprezto/runcoms/zprofile $HOME/.zprofile
 ln -s $HOME/.zprezto/runcoms/zshenv $HOME/.zshenv
 ln -s $HOME/.zprezto/runcoms/zshrc $HOME/.zshrc
-ln -s $DOTFILES_PATH/zsh/zpreztorc $HOME/.zpreztorc
+ln -s $BASEDIR/zsh/zpreztorc $HOME/.zpreztorc
+
+echo "export DOTFILES=$BASEDIR" >> $HOME/.zshrc
+
+for f in $(ls -f $BASEDIR/zsh/*.zsh); do
+    echo "source $f" >> $HOME/.zshrc
+done
+
+cat >> $HOME/.zshrc << EOF
+if [ -f "${ZDOTDIR:-$HOME}/.zsh_local" ]; then
+    source "${ZDOTDIR:-$HOME}/.zsh_local"  
+fi 
+EOF
 
 fi
