@@ -222,6 +222,48 @@ NeoBundle 'marijnh/tern_for_vim'
 let g:tern_show_argument_hints = 'on_move'
 "}}}
 
+" " golang {{{
+" NeoBundle "fatih/vim-go"
+"
+" " let g:go_disable_autoinstall = 1
+"
+" let g:go_bin_path = expand("~/.vim/golang")
+"
+" " go to declaration
+" au FileType go nmap gd <Plug>(go-def)
+" " with split or tab
+" au FileType go nmap <Leader>ds <Plug>(go-def-split)
+" au FileType go nmap <Leader>dv <Plug>(go-def-vertical)
+" au FileType go nmap <Leader>dt <Plug>(go-def-tab)
+"
+" " Disable opening browser after posting to your snippet to play.golang.org
+" let g:go_play_open_browser = 0
+" " By default vim-go shows errors for the fmt command, to disable it
+" let g:go_fmt_fail_silently = 1
+" " Disable auto fmt on save
+" let g:go_fmt_autosave = 0
+" " Disable goimports and use gofmt for the fmt command
+" let g:go_fmt_command = "gofmt"
+"
+" let g:go_snippet_engine = "neosnippet"
+" " }}}
+
+" emmet {{{
+NeoBundle "mattn/emmet-vim"
+
+let g:user_emmet_install_global = 0
+autocmd FileType html,css EmmetInstall
+
+let g:user_emmet_leader_key='<C-E>'
+
+" }}}
+
+" tcomment {{{
+NeoBundle "tomtom/tcomment_vim"
+
+map <leader>c <C-_><C-_> 
+" }}}
+
 " OMG OMG, shell in my VIM {{{
 NeoBundle "Shougo/vimshell"
 let g:vimshell_user_prompt = 'fnamemodify(getcwd(), ":~")'
@@ -234,7 +276,7 @@ if has("gui_running")
 endif
 "}}}
 
-" ##Visual
+" #Visual
 " Prettiness on the bottom {{{
 " That weird colorful line on the bottom
 NeoBundle "bling/vim-airline"
@@ -284,9 +326,12 @@ syntax on
 set ruler
 set cursorline
 
-" Trailing
+" Trailing {{{
 set listchars=tab:▸\ ,eol:¬,extends:❯,precedes:❮,trail:.
 set showbreak=↪
+" Show/hide invisibles by <leader>l
+nnoremap <leader>l :set list!<CR>
+" }}}
 
 " tabs and spaces handling
 set expandtab
@@ -356,8 +401,8 @@ let mapleader = ","
 " Spase better
 nmap <space> :
 
-" Show/hide invisibles by <leader>l
-nnoremap <leader>l :set list!<CR>
+" Clear search highlights 
+noremap <leader>/ :nohls<CR>
 
 " Tab movements
 nnoremap <leader>m :tabn<CR>
@@ -369,3 +414,15 @@ nnoremap <leader>w :w<CR>
 " When vimrc is edited, reload it
 autocmd! BufWritePost .vimrc source ~/.vimrc
 
+
+" Open from last position {{{
+if has("autocmd")
+    au BufReadPost * if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+" }}}
+
+" load local cfg {{{
+if filereadable(glob("~/.vimrc.local")) 
+    source ~/.vimrc.local
+endif
+" }}}
