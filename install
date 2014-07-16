@@ -1,11 +1,24 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 BASEDIR=$(readlink -f $0 | xargs dirname)
 
+# tmux
+[[ -f "$HOME/.tmux.conf" ]] && mv "$HOME/.tmux.conf" "$HOME/.tmux.conf.orig"
 ln -s $BASEDIR/tmux.conf $HOME/.tmux.conf
+
+# vim
+[[ -f "$HOME/.vimrc" ]] && mv "$HOME/.vimrc" "$HOME/.vimrc.orig"
+[[ -d "$HOME/.vim" ]] && mv "$HOME/.vim" "$HOME/.vim.orig"
 ln -s $BASEDIR/vimrc $HOME/.vimrc
 
 # prezto
+
+zfiles=(".zlogin" ".zlogout" ".zprofile" ".zshenv" ".zshrc" ".zpreztorc")
+for zfile in ${zfiles[*]}; do
+    [[ -f "$HOME/$zfile" ]] && mv "$HOME/$zfile" "$HOME/$zfile.orig"
+done
+[[ -d "$HOME/.zprezto" ]] && mv "$HOME/.zprezto" "$HOME/.zprezto.orig"
+
 if [ -d $BASEDIR/zsh/prezto ]; then
 
 cd $BASEDIR/zsh/prezto

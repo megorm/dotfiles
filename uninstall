@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+
+# tmux
+[[ -f "$HOME/.tmux.conf" ]] && rm "$HOME/.tmux.conf"
+[[ -f "$HOME/.tmux.conf.orig" ]] && mv "$HOME/.tmux.conf.orig" "$HOME/.tmux.conf"
+
+# vim
+[[ -f "$HOME/.vimrc" ]] && rm "$HOME/.vimrc"
+[[ -d "$HOME/.vim" ]] && rm -rf "$HOME/.vim"
+[[ -f "$HOME/.vimrc.orig"  ]] && mv "$HOME/.vimrc.orig" "$HOME/.vimrc"
+[[ -d "$HOME/.vim.orig" ]] && mv "$HOME/.vim.orig" "$HOME/.vim"
+
+# prezto
+zfiles=(".zlogin" ".zlogout" ".zprofile" ".zshenv" ".zshrc" ".zpreztorc")
+for zfile in ${zfiles[*]}; do
+    [[ -f "$HOME/$zfile" ]] && rm "$HOME/$zfile"
+    [[ -f "$HOME/$zfile.orig" ]] && mv "$HOME/$zfile.orig" "$HOME/$zfile"
+done
+[[ -d "$HOME/.zprezto" ]] && rm "$HOME/.zprezto"
+[[ -d "$HOME/.zprezto.orig" ]] && mv "$HOME/.zprezto.orig" "$HOME/.zprezto"
+
+
+zsh
